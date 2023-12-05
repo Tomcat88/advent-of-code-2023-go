@@ -13,7 +13,7 @@ var config = map[string]int{
 }
 
 func main() {
-	lines, err := utils.ReadInput("day2")
+	lines, err := utils.GetInput("day2")
 	if err != nil {
 		panic(err)
 	}
