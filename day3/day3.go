@@ -56,8 +56,8 @@ func part2(lines []string) (sum int) {
 			_, NaN := strconv.Atoi(string(c))
 			if NaN == nil {
 				number += string(c)
-				if coords:= isSymbolNear(lines, i, j, isGear); len(coords) > 0 {
-					gearNear = fmt.Sprintf("%d,%d", coords[0][0], coords[0][1]) 
+				if coords := isSymbolNear(lines, i, j, isGear); len(coords) > 0 {
+					gearNear = fmt.Sprintf("%d,%d", coords[0][0], coords[0][1])
 					// fmt.Println("found gear", coords[0][0],coords[0][1], number)
 				}
 			}
@@ -73,13 +73,21 @@ func part2(lines []string) (sum int) {
 				if !found {
 					near[gearNear] = currentNumber
 				} else {
-					fmt.Println(currentNumber, numberNear)
+					// fmt.Println(currentNumber, numberNear)
 					sum += numberNear * currentNumber
 					near[gearNear] = currentNumber
 				}
 				number = ""
 				gearNear = ""
 			}
+		}
+		if number != "" && gearNear != "" {
+			fmt.Println(number, gearNear)
+			currentNumber, err := strconv.Atoi(number)
+			if err != nil {
+				panic(err)
+			}
+			near[gearNear] = currentNumber
 		}
 		gearNear = ""
 	}
