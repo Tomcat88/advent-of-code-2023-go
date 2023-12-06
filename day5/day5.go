@@ -41,7 +41,7 @@ func (e *AlmanacEntry) getDestination(source int) (int, bool) {
 }
 
 func main() {
-	content, err := utils.ReadInputAsString("day5")
+	content, err := utils.GetInputAsString("day5")
 	if err != nil {
 		panic(err)
 	}

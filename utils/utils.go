@@ -12,13 +12,21 @@ import (
 const url = "https://adventofcode.com/2023"
 
 func GetInput(day string) ([]string, error) {
-	lines, err := ReadInput(day)
+	content, err := GetInputAsString(day)
+	if err != nil {
+        return nil, err
+    }
+    return strings.Split(content, "\n"), nil
+}
+
+func GetInputAsString(day string) (string, error) {
+	lines, err := ReadInputAsString(day)
 	if err != nil { // Try to download
 		fmt.Println("could not find input.txt. downloading...")
 		numeral, _ := strings.CutPrefix(day, "day")
 		req, e := http.NewRequest("GET", url+"/day/"+numeral+"/input", nil)
 		if e != nil {
-			return nil, e
+			return "", e
 		}
 		req.AddCookie(&http.Cookie{
 			Name:  "session",
@@ -26,15 +34,15 @@ func GetInput(day string) ([]string, error) {
 		})
 		rsp, e := http.DefaultClient.Do(req)
 		if e != nil {
-			return nil, e
+			return "", e
 		}
 		defer rsp.Body.Close()
 		body, e := io.ReadAll(rsp.Body)
 		if e != nil {
-			return nil, e
+			return "", e
 		}
 		os.WriteFile(day+"/input.txt", body, 0644)
-		return strings.Split(string(body), "\n"), nil
+		return string(body), nil
 	} else {
 		return lines, nil
 	}
