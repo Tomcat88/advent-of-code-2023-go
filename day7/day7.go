@@ -18,14 +18,6 @@ const (
 	HighCard    = 0
 )
 
-var powers = map[rune]int{
-	'A': 14,
-	'K': 13,
-	'Q': 12,
-	'J': 11,
-	'T': 10,
-}
-
 func main() {
 	lines, err := utils.ReadInput("day7")
 	if err != nil {
@@ -53,7 +45,7 @@ func part1(lines []string) (sum int) {
 	for i, handBid := range lines {
 		split := strings.Split(handBid, " ")
 		hand, bid := split[0], split[1]
-		t := getHandType(hand)
+		t := getHandType(hand, false)
 		bidInt, _ := strconv.Atoi(bid)
 		hands[i] = Hand{hand, t, bidInt, -1}
 		// fmt.Println(i, hand, bid, t)
@@ -103,7 +95,7 @@ func part2(lines []string) (sum int) {
 	for i, handBid := range lines {
 		split := strings.Split(handBid, " ")
 		hand, bid := split[0], split[1]
-		t := getHandType(hand)
+		t := getHandType(hand, true)
 		bidInt, _ := strconv.Atoi(bid)
 		hands[i] = Hand{hand, t, bidInt, -1}
 		// fmt.Println(i, hand, bid, t)
@@ -154,17 +146,30 @@ func occurrences(hand string) (m map[rune]int) {
 	return
 }
 
-func getHandType(hand string) int {
+func getHandType(hand string, joker bool) int {
 	occ := occurrences(hand)
 	keys := Keys(occ)
+	jokerOcc := 0
+	if joker {
+		jokerOcc = occ['J']
+	}
 	if len(occ) == 1 {
 		return FiveOfKind
 	}
 	if len(occ) == 2 {
 		if occ[keys[0]] == 4 || occ[keys[1]] == 4 {
+			if jokerOcc > 0 {
+                return FiveOfKind
+            }
 			return FourOfKind
 		}
 		if occ[keys[0]] == 3 || occ[keys[1]] == 3 {
+			switch {
+				case jokerOcc == 1:
+					return FourOfKind
+				case jokerOcc == 2:
+					return FiveOfKind
+			}
 			return FullHouse
 		}
 	}
