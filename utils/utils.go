@@ -78,3 +78,32 @@ func ReadInputAsString(day string) (string, error) {
 	}
 	return string(content), nil
 }
+
+
+func Gcd(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
+}
+
+func Lcm(a, b int) int {
+	if a == 0 || b == 0 {
+		return 0
+	}
+	gcd := Gcd(a, b)
+	return (a * b) / gcd
+}
+
+func LcmSlice(numbers []int) int {
+	if len(numbers) == 0 {
+		return 0
+	}
+
+	lcm := numbers[0]
+	for i := 1; i < len(numbers); i++ {
+		lcm = Lcm(lcm, numbers[i])
+	}
+
+	return lcm
+}
