@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -106,4 +107,18 @@ func LcmSlice(numbers []int) int {
 	}
 
 	return lcm
+}
+
+
+func AtoiSplit(str string, sep string) ([]int, error) {
+	slice := strings.Split(str, sep)
+	s := make([]int, len(slice))
+	for i, n := range slice {
+		int, err := strconv.Atoi(n)
+		if err != nil {
+			return nil, err
+		}
+		s[i] = int
+	}
+	return s, nil
 }
