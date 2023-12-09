@@ -15,9 +15,17 @@ const url = "https://adventofcode.com/2023"
 func GetInput(day string) ([]string, error) {
 	content, err := GetInputAsString(day)
 	if err != nil {
-        return nil, err
-    }
-    return strings.Split(content, "\n"), nil
+		return nil, err
+	}
+	ret := make([]string, 0)
+	for _, l := range strings.Split(content, "\n") {
+		if len(l) == 0 {
+			continue
+		}
+
+		ret = append(ret, l)
+	}
+	return ret, nil
 }
 
 func GetInputAsString(day string) (string, error) {
@@ -25,13 +33,15 @@ func GetInputAsString(day string) (string, error) {
 	if err != nil { // Try to download
 		fmt.Println("could not find input.txt. downloading...")
 		numeral, _ := strings.CutPrefix(day, "day")
-		req, e := http.NewRequest("GET", url+"/day/"+numeral+"/input", nil)
+		url := url + "/day/" + numeral + "/input"
+		fmt.Println("GET", url)
+		req, e := http.NewRequest("GET", url, nil)
 		if e != nil {
 			return "", e
 		}
 		req.AddCookie(&http.Cookie{
 			Name:  "session",
-			Value: os.Getenv("SESSION"),
+			Value: os.Getenv("TOKEN"),
 		})
 		rsp, e := http.DefaultClient.Do(req)
 		if e != nil {
@@ -80,7 +90,6 @@ func ReadInputAsString(day string) (string, error) {
 	return string(content), nil
 }
 
-
 func Gcd(a, b int) int {
 	for b != 0 {
 		a, b = b, a%b
@@ -109,11 +118,13 @@ func LcmSlice(numbers []int) int {
 	return lcm
 }
 
-
 func AtoiSplit(str string, sep string) ([]int, error) {
 	slice := strings.Split(str, sep)
 	s := make([]int, len(slice))
 	for i, n := range slice {
+		if n == "" {
+			continue
+		}
 		int, err := strconv.Atoi(n)
 		if err != nil {
 			return nil, err

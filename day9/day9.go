@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	lines, err := utils.ReadInput("day9")
+	lines, err := utils.GetInput("day9")
 	if err != nil {
 		panic(err)
 	}
