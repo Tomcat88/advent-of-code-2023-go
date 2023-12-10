@@ -153,7 +153,7 @@ func occurrences(hand string) (m map[rune]int) {
 
 func getHandType(hand string, joker bool) int {
 	occ := occurrences(hand)
-	keys := Keys(occ)
+	keys := utils.Keys(occ)
 	jokerOcc := 0
 	if joker {
 		jokerOcc = occ['J']
@@ -248,11 +248,4 @@ func getHandType(hand string, joker bool) int {
         return OnePair
     }
 	return HighCard
-}
-
-func Keys(m map[rune]int) (keys []rune) {
-	for k := range m {
-		keys = append(keys, k)
-	}
-	return
 }
