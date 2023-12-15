@@ -134,7 +134,7 @@ func AtoiSplit(str string, sep string) ([]int, error) {
 	return s, nil
 }
 
-func Keys[KeyType, ValueType comparable](m map[KeyType]ValueType) (keys []KeyType) {
+func Keys[KeyType comparable, ValueType any](m map[KeyType]ValueType) (keys []KeyType) {
 	for k := range m {
 		keys = append(keys, k)
 	}
